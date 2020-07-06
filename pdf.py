@@ -30,17 +30,32 @@ import sys # this is for the inputs
 
 ### watermark a file
 ### command: python pdf.py
-template = PyPDF2.PdfFileReader(open('super.pdf', 'rb'))
-watermark = PyPDF2.PdfFileReader(open('watermark.pdf', 'rb'))
-output = PyPDF2.PdfFileWriter()
+# template = PyPDF2.PdfFileReader(open('super.pdf', 'rb'))
+# watermark = PyPDF2.PdfFileReader(open('watermark.pdf', 'rb'))
+# output = PyPDF2.PdfFileWriter()
 
-for i in range(template.getNumPages()):
-    page = template.getPage(i)
-    page.mergePage(watermark.getPage(0))
-    output.addPage(page)
+# for i in range(template.getNumPages()):
+#     page = template.getPage(i)
+#     page.mergePage(watermark.getPage(0))
+#     output.addPage(page)
 
-    with open('watermarked_output.pdf', 'wb') as file:
-        output.write(file)
+#     with open('watermarked_output.pdf', 'wb') as file:
+#         output.write(file)
 
 
+### Function to extract all text from a PDF document and print it to screen.
+### command: python pdf.py
+def getPDFContent(path):
+    content = ""
+    with open('twopage.pdf', 'rb') as file:
+        reader = PyPDF2.PdfFileReader(file)
+        
+        for i in range(reader.getNumPages()):
+            page = reader.getPage(i).extractText()+'\n' 
+            content += page
 
+    content = " ".join(content.replace(u"\xa0", " ").strip().split())     
+    return content
+
+text = getPDFContent("twopage.pdf")
+print(text)
